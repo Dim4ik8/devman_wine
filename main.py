@@ -3,6 +3,9 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 import datetime
+import pandas
+import numpy
+import openpyxl
 
 year_of_start = 1920
 now = datetime.datetime.now().strftime('%Y')
@@ -24,16 +27,26 @@ def correct_years(year):
     else:
         return 'лет'
 
+excel_data = pandas.read_excel('wine.xlsx', sheet_name='Лист1', usecols=['Название', 'Сорт', 'Цена', 'Картинка'])
+all_wine = excel_data.to_dict(orient='records')
 
 template = env.get_template('template.html')
 
 rendered_page = template.render(
     age=age_of_winery,
-    correct_word=correct_years(age_of_winery)
+    correct_word=correct_years(age_of_winery),
+    wine=all_wine,
 )
+
+
+
+
+
 
 with open('index.html', 'w', encoding="utf8") as file:
     file.write(rendered_page)
+
+
 
 server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
 server.serve_forever()
