@@ -6,7 +6,7 @@ import datetime
 
 year_of_start = 1920
 now = datetime.datetime.now().strftime('%Y')
-age_of_winery = int(now) - 2015
+age_of_winery = int(now) - year_of_start
 
 env = Environment(
     loader=FileSystemLoader('.'),
