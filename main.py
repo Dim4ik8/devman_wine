@@ -36,35 +36,21 @@ all_wine_by_categories = collections.defaultdict(list)
 for item in all_wine:
     all_wine_by_categories[item['Категория']].append(item)
 
-print(all_wine_by_categories)
+
+template = env.get_template('template.html')
+
+rendered_page = template.render(
+    age=age_of_winery,
+    correct_word=correct_years(age_of_winery),
+    wine=all_wine_by_categories,
+    )
+
+# print(all_wine_by_categories['Белые вина'])
 
 
+with open('index.html', 'w', encoding="utf8") as file:
+    file.write(rendered_page)
 
 
-
-
-
-
-
-
-#
-# template = env.get_template('template.html')
-#
-# rendered_page = template.render(
-#     age=age_of_winery,
-#     correct_word=correct_years(age_of_winery),
-#     wine=all_wine,
-# )
-#
-#
-#
-#
-#
-#
-# with open('index.html', 'w', encoding="utf8") as file:
-#     file.write(rendered_page)
-#
-#
-#
-# server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-# server.serve_forever()
+server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+server.serve_forever()
