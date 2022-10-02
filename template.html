@@ -120,30 +120,32 @@
 
             <div class=row>
                 {% for category in wine %}
-                <div class="col-12 section-title text-center mb-5">
-                    <h2 class="d-block">{{ category }}</h2>
-                </div>
+                    <div class="col-12 section-title text-center mb-5">
+                        <h2 class="d-block">{{ category }}</h2>
+                    </div>
 
-                {% for item in wine[category] %}
-                <div class="col-lg-4 mb-5 col-md-6">
-                    <div class="wine_v_1 text-center pb-4 pt-5">
-                        <img src='images/{{ item['Картинка'] }}' alt="Image" class="img-fluid">
-                        {% if item['Акция'] %}
-                        <img src="assets/profitable.png"
-                             style="width:10rem;height: 10rem;position:absolute;right: -20px;top: -20px;">
-                        {% endif %}
-                        <div>
-                            <h3 class="heading mt-3 mb-3 text-dark">{{ item['Название'] }}</h3>
-                            <p>
-                                {% if item['Сорт'] != '' %}
-                            <div> Сорт винограда - {{ item['Сорт'] }} <br/></div>
+                    {% for bottle in wine[category] %}
+
+                        <div class="col-lg-4 mb-5 col-md-6">
+                            <div class="wine_v_1 text-center pb-4 pt-5">
+                            <img src='images/{{ bottle['Картинка'] }}' alt="Image" class="img-fluid">
+                            {% if bottle['Акция'] %}
+                                <img src="assets/profitable.png"
+                                style="width:10rem;height: 10rem;position:absolute;right: -20px;top: -20px;">
                             {% endif %}
-                            <span class="price">{{ item['Цена'] }} руб. </span>
-                            </p>
+                            <div>
+                                <h3 class="heading mt-3 mb-3 text-dark">{{ bottle['Название'] }}</h3>
+                                <p>
+                                    {% if bottle['Сорт'] %}
+                                        <div> Сорт винограда - {{ bottle['Сорт'] }} <br/></div>
+                                    {% endif %}
+                                <span class="price">{{ bottle['Цена'] }} руб. </span>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {% endfor %}
+
+                    {% endfor %}
                 {% endfor %}
             </div>
 
