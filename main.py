@@ -7,15 +7,6 @@ import pandas
 import collections
 import argparse
 
-foundation_year = 1920
-now = datetime.datetime.now().year
-winery_age = int(now) - foundation_year
-
-env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml'])
-)
-
 
 def correct_years(year):
     for_year = [2, 3, 4]
@@ -29,26 +20,34 @@ def correct_years(year):
 
 
 def main():
+    foundation_year = 1920
+    now = datetime.datetime.now().year
+    winery_age = now - foundation_year
+
+    env = Environment(
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
     parser = argparse.ArgumentParser(
         description='Сайт производителей вина и других напитков'
     )
-    parser.add_argument('-p', '--path', help='Путь в файлу с данными', default='wine3.xlsx')
+    parser.add_argument('-p', '--path', help='Путь в файлу с данными', default='wine_for_sale.xlsx')
     parser.add_argument('-s', '--sheet', help='Название рабочего листа', default='Лист1')
     args = parser.parse_args()
 
     excel_data = pandas.read_excel(args.path, sheet_name=args.sheet, na_values=None, keep_default_na=False)
-    all_wine = excel_data.to_dict(orient='records')
-    all_wine_by_categories = collections.defaultdict(list)
+    all_wines = excel_data.to_dict(orient='records')
+    all_wines_by_categories = collections.defaultdict(list)
 
-    for category in all_wine:
-        all_wine_by_categories[category['Категория']].append(category)
+    for category in all_wines:
+        all_wines_by_categories[category['Категория']].append(category)
 
     template = env.get_template('template.html')
 
     rendered_page = template.render(
         age=winery_age,
         correct_word=correct_years(winery_age),
-        wine=all_wine_by_categories,
+        wines=all_wines_by_categories,
     )
 
     with open('index.html', 'w', encoding="utf8") as file:
