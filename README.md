@@ -8,7 +8,7 @@
 ---
 2. Установите виртуальное окружение
 ```angular2html
-python - m venv venv
+python -m venv venv
 ```
 и активируйте его
 - код для системы Windows
